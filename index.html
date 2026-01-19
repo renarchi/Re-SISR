@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Re-SISR Showcase</title>
+  <style>
+    body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; text-align: center; padding: 20px; }
+    h1 { color: #58a6ff; }
+    .slider-container { margin: 40px auto; max-width: 800px; border-radius: 8px; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.7); }
+    a { color: #58a6ff; text-decoration: none; border: 1px solid #30363d; padding: 10px 20px; border-radius: 6px; transition: 0.3s; }
+    a:hover { background-color: #30363d; }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css"/>
+</head>
+<body>
+
+  <h1>🧪 Re-SISR Laboratory</h1>
+  <p>Interactive comparison of Super-Resolution models.</p>
+
+  <h3>Fallin_re (x4) Comparison</h3>
+  <div class="slider-container">
+    <img-comparison-slider>
+      <img slot="first" src="assets/fallin_lr_sample.jpg" width="100%" />
+      <img slot="second" src="assets/fallin_hr_sample.jpg" width="100%" />
+    </img-comparison-slider>
+  </div>
+  
+  <br><br>
+  <a href="https://github.com/renarchi/Re-SISR">← Back to Repository</a>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+[
+  {
+    "id": "fallin_re",
+    "title": "Fallin Re x2",
+    "description": "Lines and detail preservation has been improved compared to the previous version.",
+    "before": "./assets/fallin_re_lr_sample.jpg",
+    "after": "./assets/fallin_re_hr_sample.jpg"
+  }
+]

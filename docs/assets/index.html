@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Re-SISR Gallery</title>
+  <style>
+    body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; text-align: center; padding: 20px; }
+    h1 { color: #58a6ff; margin-bottom: 10px; }
+    .model-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; margin: 30px auto; max-width: 800px; }
+    .slider-container { border-radius: 8px; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.5); margin-top: 15px; }
+    h2 { margin: 0; color: #f0f6fc; }
+    p { color: #8b949e; font-size: 0.9em; }
+    .back-btn { display: inline-block; margin-top: 30px; padding: 10px 20px; background: #238636; color: white; text-decoration: none; border-radius: 6px; }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css"/>
+</head>
+<body>
+  <h1>🧪 Re-SISR Gallery</h1>
+  <p>Automated Benchmark Showcase</p>
+  <div id="gallery-container"></div>
+  <a href="https://github.com/renarchi/Re-SISR" class="back-btn">← Back to Repo</a>
+
+  <script>
+    fetch('./models.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('gallery-container');
+        data.forEach(model => {
+          const html = `
+            <div class="model-card">
+              <h2>${model.title}</h2>
+              <p>${model.description}</p>
+              <div class="slider-container">
+                <img-comparison-slider>
+                  <img slot="first" src="${model.before}" width="100%" />
+                  <img slot="second" src="${model.after}" width="100%" />
+                </img-comparison-slider>
+              </div>
+            </div>
+          `;
+          container.innerHTML += html;
+        });
+      })
+      .catch(error => console.error('Error loading models:', error));
+  </script>
+</body>
+</html>
