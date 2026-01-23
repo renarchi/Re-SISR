@@ -59,7 +59,7 @@
   ],
   "changelog": [
     {
-      "date": "15 Sep 2026",
+      "date": "23 jan 2026",
       "title": "Migrated to Imgsli",
       "content": "Moved all visual benchmarks to Imgsli for better interactive comparison tools."
     },
