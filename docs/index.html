@@ -3,47 +3,241 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Re-SISR Gallery</title>
+  <title>Renarchi Lab</title>
+  
+  <!-- Sadece İkonlar ve Fontlar (Slider scriptlerini sildim) -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  
   <style>
-    body { background-color: #0d1117; color: #c9d1d9; font-family: sans-serif; text-align: center; padding: 20px; }
-    h1 { color: #58a6ff; margin-bottom: 10px; }
-    .model-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; margin: 30px auto; max-width: 800px; }
-    .slider-container { border-radius: 8px; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.5); margin-top: 15px; }
-    h2 { margin: 0; color: #f0f6fc; }
-    p { color: #8b949e; font-size: 0.9em; }
-    .back-btn { display: inline-block; margin-top: 30px; padding: 10px 20px; background: #238636; color: white; text-decoration: none; border-radius: 6px; }
+    /* --- TEMEL AYARLAR --- */
+    :root {
+      --bg-dark: #0d1117;
+      --bg-panel: #161b22;
+      --border: #30363d;
+      --text-main: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent-hover: #1f6feb;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* --- SIDEBAR --- */
+    .sidebar {
+      width: 260px;
+      background-color: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+    .profile { text-align: center; margin-bottom: 30px; }
+    .profile img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--border); margin-bottom: 10px; }
+    .profile h2 { font-size: 1.2rem; color: #fff; }
+    .profile p { font-size: 0.8rem; color: var(--text-muted); }
+
+    .nav-links { display: flex; flex-direction: column; gap: 5px; }
+    .nav-btn {
+      background: none; border: none; color: var(--text-muted);
+      padding: 12px 15px; text-align: left; cursor: pointer;
+      border-radius: 6px; font-size: 0.95rem;
+      display: flex; align-items: center; gap: 10px; transition: 0.2s;
+    }
+    .nav-btn:hover, .nav-btn.active { background-color: #21262d; color: #fff; }
+    .nav-btn.active { border-left: 3px solid var(--accent); }
+
+    /* --- MAIN CONTENT --- */
+    .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+    .section { display: none; animation: fadeIn 0.3s ease; }
+    .section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    h1 { font-size: 2rem; margin-bottom: 10px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+    
+    /* --- GRID SYSTEM --- */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+    
+    /* --- PROJECT CARDS --- */
+    .card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; transition: 0.3s; }
+    .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .tag { font-size: 0.7rem; text-transform: uppercase; background: #238636; color: white; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    .tag.private { background: #9e6a03; }
+
+    /* --- IMGSLI CARDS (NEW) --- */
+    .imgsli-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: 0.3s;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none; /* Link çizgisini kaldır */
+    }
+    .imgsli-card:hover { transform: translateY(-3px); border-color: #ff9800; /* Imgsli Turuncusu */ }
+    
+    .imgsli-thumb {
+      height: 140px;
+      background: #000;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+    .imgsli-overlay {
+      position: absolute; top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: 0.3s;
+    }
+    .imgsli-card:hover .imgsli-overlay { opacity: 1; }
+    .imgsli-content { padding: 15px; }
+    
+    .btn-imgsli {
+      background: #ff9800; color: #fff; padding: 8px 15px; border-radius: 4px; font-weight: bold; font-size: 0.9rem;
+    }
+
+    /* --- TIMELINE --- */
+    .timeline { position: relative; border-left: 2px solid var(--border); margin-left: 10px; padding-left: 20px; margin-top: 20px; }
+    .timeline-item { position: relative; margin-bottom: 30px; }
+    .timeline-item::before { content: ''; position: absolute; left: -26px; top: 5px; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; }
+    .date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
+    .timeline-content { background: var(--bg-panel); padding: 15px; border-radius: 6px; border: 1px solid var(--border); }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+      body { flex-direction: column; overflow: auto; }
+      .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+      .main-content { padding: 20px; }
+    }
   </style>
-  <script defer src="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/index.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/img-comparison-slider@8/dist/styles.css"/>
 </head>
 <body>
-  <h1>🧪 Re-SISR Gallery</h1>
-  <p>Automated Benchmark Showcase</p>
-  <div id="gallery-container"></div>
-  <a href="https://github.com/renarchi/Re-SISR" class="back-btn">← Back to Repo</a>
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="profile" id="profile-area">
+      <div style="color: var(--text-muted)">Loading...</div>
+    </div>
+    
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="showSection('projects')"><i class="ri-dashboard-line"></i> Projects</button>
+      <button class="nav-btn" onclick="showSection('lab')"><i class="ri-flask-line"></i> Lab / Gallery</button>
+      <button class="nav-btn" onclick="showSection('changelog')"><i class="ri-history-line"></i> Changelog</button>
+      <a href="https://github.com/renarchi/Re-SISR" class="nav-btn"><i class="ri-github-fill"></i> Repository</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    
+    <!-- SECTION: PROJECTS -->
+    <div id="projects" class="section active">
+      <h1>Projects Overview</h1>
+      <p>Current active models and research status.</p>
+      <div class="grid" id="projects-grid"></div>
+    </div>
+
+    <!-- SECTION: LAB (IMGSLI GUNCELLEMESI) -->
+    <div id="lab" class="section">
+      <h1>SISR Laboratory</h1>
+      <p>High-fidelity comparisons hosted externally on Imgsli.</p>
+      <div class="grid" id="lab-grid"></div>
+    </div>
+
+    <!-- SECTION: CHANGELOG -->
+    <div id="changelog" class="section">
+      <h1>Development Log</h1>
+      <div class="timeline" id="timeline-container"></div>
+    </div>
+
+  </main>
 
   <script>
-    fetch('./models.json')
-      .then(response => response.json())
+    fetch('./data.json')
+      .then(res => res.json())
       .then(data => {
-        const container = document.getElementById('gallery-container');
-        data.forEach(model => {
-          const html = `
-            <div class="model-card">
-              <h2>${model.title}</h2>
-              <p>${model.description}</p>
-              <div class="slider-container">
-                <img-comparison-slider>
-                  <img slot="first" src="${model.before}" width="100%" />
-                  <img slot="second" src="${model.after}" width="100%" />
-                </img-comparison-slider>
+        
+        // 1. Profile
+        document.getElementById('profile-area').innerHTML = `
+          <img src="${data.profile.avatar}" alt="Avatar">
+          <h2>${data.profile.name}</h2>
+          <p>${data.profile.role}</p>
+        `;
+
+        // 2. Projects
+        const projGrid = document.getElementById('projects-grid');
+        data.projects.forEach(p => {
+          const tagClass = p.tag.toLowerCase().includes('private') ? 'private' : '';
+          projGrid.innerHTML += `
+            <div class="card">
+              <span class="tag ${tagClass}">${p.tag}</span>
+              <h3>${p.title}</h3>
+              <p style="margin-top:10px; color:var(--text-muted); font-size:0.9rem;">${p.desc}</p>
+              <a href="${p.link}" style="display:inline-block; margin-top:15px; color:var(--accent); text-decoration:none; font-weight:600;">View Details →</a>
+            </div>
+          `;
+        });
+
+        // 3. Lab / Gallery (IMGSLI LINKLERI)
+        const labGrid = document.getElementById('lab-grid');
+        data.gallery.forEach(item => {
+          // Thumbnail varsa kullan, yoksa gri placeholder koy
+          const bgImage = item.thumbnail ? `url('${item.thumbnail}')` : 'linear-gradient(45deg, #161b22, #30363d)';
+          
+          labGrid.innerHTML += `
+            <a href="${item.imgsli}" target="_blank" class="imgsli-card">
+              <div class="imgsli-thumb" style="background-image: ${bgImage};">
+                <div class="imgsli-overlay">
+                  <span class="btn-imgsli">Open Comparison <i class="ri-external-link-line"></i></span>
+                </div>
+              </div>
+              <div class="imgsli-content">
+                <h3 style="color:#c9d1d9; font-size:1.1rem; margin-bottom:5px;">${item.title}</h3>
+                <p style="color:var(--text-muted); font-size:0.85rem;">${item.desc}</p>
+              </div>
+            </a>
+          `;
+        });
+
+        // 4. Changelog
+        const timeline = document.getElementById('timeline-container');
+        data.changelog.forEach(log => {
+          timeline.innerHTML += `
+            <div class="timeline-item">
+              <div class="date">${log.date}</div>
+              <div class="timeline-content">
+                <h4 style="margin-bottom:5px;">${log.title}</h4>
+                <p style="font-size:0.9rem; color:var(--text-muted);">${log.content}</p>
               </div>
             </div>
           `;
-          container.innerHTML += html;
         });
-      })
-      .catch(error => console.error('Error loading models:', error));
+
+      });
+
+    // NAVIGATION
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      
+      const buttons = document.querySelectorAll('.nav-btn');
+      if(id === 'projects') buttons[0].classList.add('active');
+      if(id === 'lab') buttons[1].classList.add('active');
+      if(id === 'changelog') buttons[2].classList.add('active');
+    }
   </script>
 </body>
 </html>

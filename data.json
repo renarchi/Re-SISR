@@ -1,0 +1,49 @@
+{
+  "profile": {
+    "name": "Renarchi",
+    "role": "AI Research & Restoration",
+    "bio": "I'm Interested in Single Image Super Resolution (SISR)",
+    "github": "https://github.com/renarchi",
+    "avatar": "https://github.com/renarchi.png"
+  },
+  "projects": [
+    {
+      "title": "4x_Alchemy",
+      "tag": "Public",
+      "desc": "A finalized SISR model optimized for manga covers and webtoons.",
+      "link": "https://github.com/renarchi/Re-SISR/releases/tag/4x_Alchemy"
+    },
+    {
+      "title": "Fallin_re",
+      "tag": "Private / Showcase",
+      "desc": "Experimental model focusing on realtime upscaling. Currently in closed beta.",
+      "link": "#"
+    }
+  ],
+  "gallery": [
+    {
+      "title": "Fallin_re Showcase",
+      "desc": "Comparison on anime scenes. Compared to previous Fallin models, better details, better lines and the aliasing problem is fixed",
+      "imgsli": "https://imgsli.com/NDQ0NzMy",
+      "thumbnail": "https://github.com/renarchi.png" 
+    },
+    {
+      "title": "4x_Alchemy Showcase",
+      "desc": "4x_Alchemy showcase on manga scans.",
+      "imgsli": "https://imgsli.com/NDQ0NzI2",
+      "thumbnail": "https://github.com/renarchi.png"
+    }
+  ],
+  "changelog": [
+    {
+      "date": "15 Sep 2025",
+      "title": "Migrated to Imgsli",
+      "content": "Moved all visual benchmarks to Imgsli for better interactive comparison tools."
+    },
+    {
+      "date": "14 Sep 2025",
+      "title": "Fallin_re Showcase Live",
+      "content": "Transitioned Fallin model to private showcase."
+    }
+  ]
+}
