@@ -1,0 +1,31 @@
+# LICENSING & LEGAL INFORMATION
+
+### 1. SCOPE OF LICENSE
+The license terms defined below apply to the **entire repository**, including but not limited to:
+*   The `main` branch and all current/future branches.
+*   The deployed GitHub Pages website (Dashboard/Gallery).
+*   All released model weights, configuration files, and documentation.
+
+---
+
+### 2. PRIMARY LICENSE (CC BY 4.0)
+The original content of this repository (Models, Code, Designs) created by **renarchi** is licensed under the **Creative Commons Attribution 4.0 International (CC BY 4.0)** license.
+
+**You are free to:**
+*   **Share** — copy and redistribute the material in any medium or format.
+*   **Adapt** — remix, transform, and build upon the material for any purpose, even commercially.
+
+**Under the following terms:**
+*   **Attribution** — You must give appropriate credit to "renarchi", provide a link to the license, and indicate if changes were made.
+
+---
+
+### 3. THIRD-PARTY CONTENT DISCLAIMER
+Some images used for demonstration, showcasing, or testing purposes (e.g., screenshots from Anime, Manga, or Illustrations) within the repository or the website are the property of their respective copyright holders.
+
+*   These images are used solely for **comparative and educational purposes** (Fair Use).
+*   The CC BY 4.0 license **DOES NOT** apply to these third-party copyrighted works. You should not assume ownership or license over the original artistic content depicted in benchmarks.
+
+---
+
+To view a copy of the CC BY 4.0 license, visit http://creativecommons.org/licenses/by/4.0/
