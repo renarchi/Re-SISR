@@ -14,7 +14,7 @@
       "link": "https://github.com/renarchi/Re-SISR/releases/tag/4x_Alchemy"
     },
     {
-      "title": "Fallin_re",
+      "title": "Fallin:re",
       "tag": "Private / Showcase",
       "desc": "Experimental model focusing on realtime upscaling. Currently in closed beta.",
       "link": "#"
@@ -31,9 +31,9 @@
   ],
   "gallery": [
     {
-      "title": "Fallin_re Showcase",
+      "title": "Fallin:re Showcase",
       "desc": "Comparison on anime scenes. Compared to previous Fallin models (Soft & Strong), better details, better lines and the aliasing problem is fixed",
-      "imgsli": "https://imgsli.com/NDQ0NzMy",
+      "imgsli": "https://imgsli.com/NDQ0OTkx",
       "thumbnail": "https://github.com/renarchi.png" 
     },
 
@@ -65,7 +65,7 @@
     },
     {
       "date": "21 Jan 2026",
-      "title": "Fallin_re (WIP) Showcase Live",
+      "title": "Fallin:re (WIP) Showcase Live",
       "content": "Transitioned Fallin model to private showcase."
     },
 
