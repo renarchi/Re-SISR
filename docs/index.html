@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Re-SISR | Single Image Super-Resolution & Restoration Repository</title>
   
-  <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="./renarchi.jpg">
   <link rel="apple-touch-icon" href="./renarchi.jpg">
   
@@ -28,31 +27,23 @@
       background-color: var(--bg-dark);
       color: var(--text-main);
       font-family: 'Inter', sans-serif;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
+      display: flex; height: 100vh; overflow: hidden;
     }
 
     /* --- MOBILE HEADER --- */
     .mobile-header {
-      display: none;
-      position: fixed; top: 0; left: 0; right: 0;
-      height: 60px;
-      background: var(--bg-panel);
-      border-bottom: 1px solid var(--border);
-      align-items: center; padding: 0 20px;
-      z-index: 100; justify-content: space-between;
+      display: none; position: fixed; top: 0; left: 0; right: 0; height: 60px;
+      background: var(--bg-panel); border-bottom: 1px solid var(--border);
+      align-items: center; padding: 0 20px; z-index: 100; justify-content: space-between;
     }
     .menu-toggle { background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
     .mobile-brand { font-weight: 700; color: #fff; }
 
     /* --- SIDEBAR --- */
     .sidebar {
-      width: 280px; background-color: var(--bg-panel);
-      border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; padding: 20px;
-      flex-shrink: 0; height: 100%; z-index: 101;
-      transition: transform 0.3s ease;
+      width: 280px; background-color: var(--bg-panel); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; padding: 20px; flex-shrink: 0; height: 100%;
+      z-index: 101; transition: transform 0.3s ease;
     }
     .profile { text-align: center; margin-bottom: 30px; margin-top: 10px; }
     .profile img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--border); margin-bottom: 10px; }
@@ -61,9 +52,8 @@
 
     .nav-links { display: flex; flex-direction: column; gap: 8px; }
     .nav-btn {
-      background: none; border: none; color: var(--text-muted);
-      padding: 12px 15px; text-align: left; cursor: pointer;
-      border-radius: 6px; font-size: 0.95rem;
+      background: none; border: none; color: var(--text-muted); padding: 12px 15px;
+      text-align: left; cursor: pointer; border-radius: 6px; font-size: 0.95rem;
       display: flex; align-items: center; gap: 12px; transition: 0.2s;
     }
     .nav-btn:hover, .nav-btn.active { background-color: #21262d; color: #fff; }
@@ -71,28 +61,25 @@
     .nav-btn i { font-size: 1.2rem; }
 
     /* --- MAIN CONTENT --- */
-    .main-content { flex: 1; padding: 40px; overflow-y: auto; position: relative; }
+    .main-content { 
+      flex: 1; padding: 40px; overflow-y: auto; position: relative;
+      display: flex; flex-direction: column;
+    }
+
     .section { display: none; animation: fadeIn 0.3s ease; }
     .section.active { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     h1 { font-size: 2rem; margin-bottom: 10px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-    
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
     
-    /* --- CARD STYLES*/
     .card {
-      background: var(--bg-panel);
-      border: 1px solid var(--border);
-      border-radius: 8px; padding: 20px;
-      transition: transform 0.3s ease, border-color 0.3s ease; /* Animasyon eklendi */
+      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
     }
-    .card:hover {
-      transform: translateY(-5px); /* Yukarı kalkma efekti */
-      border-color: var(--accent); /* Kenarlık rengi değişimi */
-    }
+    .card:hover { transform: translateY(-5px); border-color: var(--accent); }
 
-    /* Imgsli Cards */
+    /* --- IMGSLI CARDS (Auto-API Style) --- */
     .imgsli-card { 
       background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; 
       padding: 0; display: block; text-decoration: none; overflow: hidden; 
@@ -100,27 +87,46 @@
     }
     .imgsli-card:hover { transform: translateY(-5px); border-color: #ff9800; }
     
-    .imgsli-thumb { height: 160px; background-size: cover; background-position: center; position: relative; border-bottom: 1px solid var(--border); }
-    .imgsli-overlay { position: absolute; inset:0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition:0.3s; }
+    .imgsli-thumb { 
+      height: 170px; 
+      background-size: cover; 
+      background-position: center; 
+      position: relative; 
+      border-bottom: 1px solid var(--border);
+      background-color: #0d1117; /* Loading rengi */
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    /* Loading Spinner */
+    .loading-spinner {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .spinner {
+      width: 24px; height: 24px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .imgsli-overlay { position: absolute; inset:0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition:0.3s; z-index: 2; }
     .imgsli-card:hover .imgsli-overlay { opacity: 1; }
     .btn-imgsli { background: #ff9800; color:white; padding: 6px 12px; border-radius:4px; font-size:0.9rem; font-weight:600; }
 
-    /* Timeline */
+    /* Tags & Timeline */
+    .tag { font-size: 0.7rem; text-transform: uppercase; background: #238636; color: white; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    .tag.private { background: #9e6a03; }
     .timeline { border-left: 2px solid var(--border); margin-left: 10px; padding-left: 20px; margin-top: 20px; }
     .timeline-item { margin-bottom: 25px; position: relative; }
     .timeline-item::before { content: ''; position: absolute; left: -27px; top: 5px; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; border: 2px solid var(--bg-dark); }
     .timeline-content { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
     .date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
 
-    /* Tags */
-    .tag { font-size: 0.7rem; text-transform: uppercase; background: #238636; color: white; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
-    .tag.private { background: #9e6a03; }
+    /* Footer */
+    footer { margin-top: auto; padding-top: 40px; padding-bottom: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem; width: 100%; }
 
-    /* OVERLAY */
+    /* Overlay & Responsive */
     .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; backdrop-filter: blur(2px); }
     .overlay.active { display: block; }
 
-    /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
       body { flex-direction: column; }
       .mobile-header { display: flex; }
@@ -134,31 +140,25 @@
 </head>
 <body>
 
-  <!-- MOBILE HEADER -->
   <header class="mobile-header">
     <span class="mobile-brand">Renarchi Lab</span>
     <button class="menu-toggle" onclick="toggleMenu()"><i class="ri-menu-line"></i></button>
   </header>
-
   <div class="overlay" onclick="toggleMenu()"></div>
 
-  <!-- SIDEBAR -->
   <nav class="sidebar" id="sidebar">
     <div class="profile" id="profile-area">
       <div style="color: var(--text-muted)">Loading...</div>
     </div>
-    
     <div class="nav-links">
       <button class="nav-btn active" onclick="showSection('projects')"><i class="ri-dashboard-line"></i> Projects</button>
-      <button class="nav-btn" onclick="showSection('lab')"><i class="ri-flask-line"></i> Lab / Gallery</button>
+      <button class="nav-btn" onclick="showSection('lab')"><i class="ri-flask-line"></i> Showcase</button>
       <button class="nav-btn" onclick="showSection('changelog')"><i class="ri-history-line"></i> Changelog</button>
       <a href="https://github.com/renarchi/Re-SISR" class="nav-btn"><i class="ri-github-fill"></i> Repository</a>
     </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
   <main class="main-content">
-    
     <div id="projects" class="section active">
       <h1>Projects Overview</h1>
       <p style="color:var(--text-muted); margin-bottom:20px;">Current active models and research status.</p>
@@ -176,34 +176,45 @@
       <div class="timeline" id="timeline-container"></div>
     </div>
 
-    <!-- FOOTER -->
-    <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem;">
-        <p>Content & Models © 2025-2026 <strong>Renarchi</strong>. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color: var(--accent); text-decoration: none;">CC BY 4.0</a>.</p>
+<footer>
+        <p style="color: var(--text-main); font-weight: 500;">
+          © 2026 
+          <strong>
+            <a href="https://github.com/renarchi" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px dotted #8b949e;">
+              Renarchi
+            </a>
+          </strong>. 
+          All Rights Reserved.
+        </p>
+              
+        <p style="margin-top:8px; color: var(--text-muted);">
+            Licensed under 
+            <a href="https://github.com/renarchi/Re-SISR/blob/main/LICENSE" target="_blank" style="color: #79c0ff; text-decoration: none; font-weight: 600;">
+              CC BY 4.0
+            </a>
+            <br>
+            <span style="font-size: 0.75rem; color: #8b949e; display: inline-block; margin-top: 2px;">
+                (See license file for Third-Party Content Disclaimer)
+            </span>
+        </p>
     </footer>
-
-  </main>
 
   <script>
     function toggleMenu() {
       document.getElementById('sidebar').classList.toggle('active');
       document.querySelector('.overlay').classList.toggle('active');
     }
-
-    function closeMenuOnMobile() {
-      if (window.innerWidth <= 768) toggleMenu();
-    }
+    function closeMenuOnMobile() { if (window.innerWidth <= 768) toggleMenu(); }
 
     fetch('./data.json')
       .then(res => res.json())
       .then(data => {
-        // Profile
+        // Profile & Projects - SAME AS BEFORE
         document.getElementById('profile-area').innerHTML = `
           <img src="${data.profile.avatar}" alt="Avatar">
           <h2>${data.profile.name}</h2>
           <p>${data.profile.role}</p>
         `;
-
-        // Projects
         const projGrid = document.getElementById('projects-grid');
         data.projects.forEach(p => {
           const tagClass = p.tag.toLowerCase().includes('private') ? 'private' : '';
@@ -217,23 +228,21 @@
           `;
         });
 
-        // Lab 
+        // --- AUTOMATED THUMBNAILS (API MAGIC) ---
         const labGrid = document.getElementById('lab-grid');
-        data.gallery.forEach(item => {
-
-          let imgsliID = "";
-          try {
-            imgsliID = item.imgsli.split('/').pop();
-          } catch(e) {
-            console.error("Link hatası", e);
-          }
-
-
-          const bgImage = item.thumbnail ? `url('${item.thumbnail}')` : `url('https://imgsli.com/i/${imgsliID}.jpg')`;
+        
+        data.gallery.forEach((item, index) => {
+          // Benzersiz bir ID verelim
+          const cardId = `imgsli-thumb-${index}`;
           
           labGrid.innerHTML += `
             <a href="${item.imgsli}" target="_blank" class="imgsli-card">
-              <div class="imgsli-thumb" style="background-image: ${bgImage};">
+              <div class="imgsli-thumb" id="${cardId}">
+                <!-- Loading Spinner -->
+                <div class="loading-spinner">
+                   <div class="spinner"></div>
+                </div>
+                <!-- Overlay -->
                 <div class="imgsli-overlay">
                   <span class="btn-imgsli">Open Comparison <i class="ri-external-link-line"></i></span>
                 </div>
@@ -244,9 +253,30 @@
               </div>
             </a>
           `;
+
+          // API ÇAĞRISI (Arka Planda Resim Çekme)
+          // Microlink API'si ücretsiz ve çok hızlıdır. Discord'un yaptığı gibi meta tag'i okur.
+          const apiUrl = `https://api.microlink.io/?url=${encodeURIComponent(item.imgsli)}&palette=true`;
+          
+          fetch(apiUrl)
+            .then(res => res.json())
+            .then(apiData => {
+                if (apiData.status === 'success' && apiData.data.image) {
+                    const imgUrl = apiData.data.image.url;
+                    const thumbElement = document.getElementById(cardId);
+                    
+                    // Resmi arka plana koy
+                    thumbElement.style.backgroundImage = `url('${imgUrl}')`;
+                    
+                    // Spinner'ı gizle
+                    const spinner = thumbElement.querySelector('.loading-spinner');
+                    if(spinner) spinner.style.display = 'none';
+                }
+            })
+            .catch(err => console.log('Thumbnail fetch error:', err));
         });
 
-        // Changelog
+        // Changelog - SAME AS BEFORE
         const timeline = document.getElementById('timeline-container');
         data.changelog.forEach(log => {
           timeline.innerHTML += `
@@ -265,12 +295,10 @@
       document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-      
       const buttons = document.querySelectorAll('.nav-btn');
       if(id === 'projects') buttons[0].classList.add('active');
       if(id === 'lab') buttons[1].classList.add('active');
       if(id === 'changelog') buttons[2].classList.add('active');
-      
       closeMenuOnMobile();
     }
   </script>
