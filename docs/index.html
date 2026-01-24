@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Re-SISR | Single Image Super-Resolution & Restoration Repository </title>
+  <title>Re-SISR | Single Image Super-Resolution & Restoration Repository</title>
+  
+  <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="./renarchi.jpg">
+  <link rel="apple-touch-icon" href="./renarchi.jpg">
   
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -30,38 +33,27 @@
       overflow: hidden;
     }
 
-    /* --- MOBILE HEADER (Sadece Mobilde Görünür) --- */
+    /* --- MOBILE HEADER --- */
     .mobile-header {
-      display: none; /* Masaüstünde gizli */
-      position: fixed;
-      top: 0; left: 0; right: 0;
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0;
       height: 60px;
       background: var(--bg-panel);
       border-bottom: 1px solid var(--border);
-      align-items: center;
-      padding: 0 20px;
-      z-index: 100;
-      justify-content: space-between;
+      align-items: center; padding: 0 20px;
+      z-index: 100; justify-content: space-between;
     }
-    .menu-toggle {
-      background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer;
-    }
+    .menu-toggle { background: none; border: none; color: var(--text-main); font-size: 1.5rem; cursor: pointer; }
     .mobile-brand { font-weight: 700; color: #fff; }
 
     /* --- SIDEBAR --- */
     .sidebar {
-      width: 280px;
-      background-color: var(--bg-panel);
+      width: 280px; background-color: var(--bg-panel);
       border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      flex-shrink: 0;
-      height: 100%;
-      z-index: 101;
+      display: flex; flex-direction: column; padding: 20px;
+      flex-shrink: 0; height: 100%; z-index: 101;
       transition: transform 0.3s ease;
     }
-
     .profile { text-align: center; margin-bottom: 30px; margin-top: 10px; }
     .profile img { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--border); margin-bottom: 10px; }
     .profile h2 { font-size: 1.2rem; color: #fff; }
@@ -88,69 +80,66 @@
     
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
     
-    .card, .imgsli-card, .timeline-content {
-      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px;
+    /* --- CARD STYLES*/
+    .card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 20px;
+      transition: transform 0.3s ease, border-color 0.3s ease; /* Animasyon eklendi */
     }
-    
+    .card:hover {
+      transform: translateY(-5px); /* Yukarı kalkma efekti */
+      border-color: var(--accent); /* Kenarlık rengi değişimi */
+    }
+
     /* Imgsli Cards */
-    .imgsli-card { padding: 0; display: block; text-decoration: none; overflow: hidden; transition: 0.3s; }
-    .imgsli-thumb { height: 150px; background-size: cover; background-position: center; position: relative; border-bottom: 1px solid var(--border); }
-    .imgsli-overlay { position: absolute; inset:0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition:0.3s; }
+    .imgsli-card { 
+      background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; 
+      padding: 0; display: block; text-decoration: none; overflow: hidden; 
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    .imgsli-card:hover { transform: translateY(-5px); border-color: #ff9800; }
+    
+    .imgsli-thumb { height: 160px; background-size: cover; background-position: center; position: relative; border-bottom: 1px solid var(--border); }
+    .imgsli-overlay { position: absolute; inset:0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition:0.3s; }
     .imgsli-card:hover .imgsli-overlay { opacity: 1; }
     .btn-imgsli { background: #ff9800; color:white; padding: 6px 12px; border-radius:4px; font-size:0.9rem; font-weight:600; }
-
-    /* Tags */
-    .tag { font-size: 0.7rem; text-transform: uppercase; background: #238636; color: white; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
-    .tag.private { background: #9e6a03; }
 
     /* Timeline */
     .timeline { border-left: 2px solid var(--border); margin-left: 10px; padding-left: 20px; margin-top: 20px; }
     .timeline-item { margin-bottom: 25px; position: relative; }
     .timeline-item::before { content: ''; position: absolute; left: -27px; top: 5px; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; border: 2px solid var(--bg-dark); }
+    .timeline-content { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
     .date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; }
 
-    /* OVERLAY  */
-    .overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; backdrop-filter: blur(2px);
-    }
+    /* Tags */
+    .tag { font-size: 0.7rem; text-transform: uppercase; background: #238636; color: white; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+    .tag.private { background: #9e6a03; }
+
+    /* OVERLAY */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 99; backdrop-filter: blur(2px); }
     .overlay.active { display: block; }
 
-    /* --- RESPONSIVE DESIGN --- */
+    /* --- RESPONSIVE --- */
     @media (max-width: 768px) {
       body { flex-direction: column; }
-      
-
       .mobile-header { display: flex; }
-
-
-      .sidebar {
-        position: fixed; top: 0; left: 0; bottom: 0;
-        transform: translateX(-100%); /* Ekranın soluna at */
-        width: 80%; max-width: 300px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      }
-      .sidebar.active { transform: translateX(0); } /* Açılınca geri gelsin */
-
-
-      .main-content { margin-top: 60px; /* Header kadar boşluk bırak */ padding: 20px; }
-      
-      .grid { grid-template-columns: 1fr; } /* Kartlar tek sütun */
-      
+      .sidebar { position: fixed; top: 0; left: 0; bottom: 0; transform: translateX(-100%); width: 80%; max-width: 300px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+      .sidebar.active { transform: translateX(0); }
+      .main-content { margin-top: 60px; padding: 20px; }
+      .grid { grid-template-columns: 1fr; }
       h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- MOBILE HEADER  -->
+  <!-- MOBILE HEADER -->
   <header class="mobile-header">
     <span class="mobile-brand">Renarchi Lab</span>
-    <button class="menu-toggle" onclick="toggleMenu()">
-      <i class="ri-menu-line"></i>
-    </button>
+    <button class="menu-toggle" onclick="toggleMenu()"><i class="ri-menu-line"></i></button>
   </header>
 
-  <!-- OVERLAY -->
   <div class="overlay" onclick="toggleMenu()"></div>
 
   <!-- SIDEBAR -->
@@ -187,25 +176,22 @@
       <div class="timeline" id="timeline-container"></div>
     </div>
 
+    <!-- FOOTER -->
+    <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; color: var(--text-muted); font-size: 0.8rem;">
+        <p>Content & Models © 2025-2026 <strong>Renarchi</strong>. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color: var(--accent); text-decoration: none;">CC BY 4.0</a>.</p>
+    </footer>
+
   </main>
 
   <script>
-
     function toggleMenu() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.querySelector('.overlay');
-      
-      sidebar.classList.toggle('active');
-      overlay.classList.toggle('active');
+      document.getElementById('sidebar').classList.toggle('active');
+      document.querySelector('.overlay').classList.toggle('active');
     }
-
 
     function closeMenuOnMobile() {
-      if (window.innerWidth <= 768) {
-        toggleMenu();
-      }
+      if (window.innerWidth <= 768) toggleMenu();
     }
-
 
     fetch('./data.json')
       .then(res => res.json())
@@ -221,7 +207,6 @@
         const projGrid = document.getElementById('projects-grid');
         data.projects.forEach(p => {
           const tagClass = p.tag.toLowerCase().includes('private') ? 'private' : '';
-          // Kart stili
           projGrid.innerHTML += `
             <div class="card">
               <span class="tag ${tagClass}">${p.tag}</span>
@@ -232,15 +217,25 @@
           `;
         });
 
-        // Lab (Imgsli)
+        // Lab 
         const labGrid = document.getElementById('lab-grid');
         data.gallery.forEach(item => {
-          const bgImage = item.thumbnail ? `url('${item.thumbnail}')` : 'linear-gradient(45deg, #161b22, #30363d)';
+
+          let imgsliID = "";
+          try {
+            imgsliID = item.imgsli.split('/').pop();
+          } catch(e) {
+            console.error("Link hatası", e);
+          }
+
+
+          const bgImage = item.thumbnail ? `url('${item.thumbnail}')` : `url('https://imgsli.com/i/${imgsliID}.jpg')`;
+          
           labGrid.innerHTML += `
             <a href="${item.imgsli}" target="_blank" class="imgsli-card">
               <div class="imgsli-thumb" style="background-image: ${bgImage};">
                 <div class="imgsli-overlay">
-                  <span class="btn-imgsli">Open <i class="ri-external-link-line"></i></span>
+                  <span class="btn-imgsli">Open Comparison <i class="ri-external-link-line"></i></span>
                 </div>
               </div>
               <div style="padding:15px;">
@@ -266,20 +261,16 @@
         });
       });
 
-
     function showSection(id) {
-
       document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      
-
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      
       const buttons = document.querySelectorAll('.nav-btn');
       if(id === 'projects') buttons[0].classList.add('active');
       if(id === 'lab') buttons[1].classList.add('active');
       if(id === 'changelog') buttons[2].classList.add('active');
-
-
+      
       closeMenuOnMobile();
     }
   </script>

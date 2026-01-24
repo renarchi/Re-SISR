@@ -19,24 +19,20 @@
       "desc": "Experimental model focusing on realtime upscaling. Currently in closed beta.",
       "link": "#"
     },
-
-
     {
       "title": "Fallin (Legacy)",
       "tag": "Public",
       "desc": "Previous generation real-time upscalers for 1080p anime. Includes 'Soft' and 'Strong' variants.",
       "link": "https://github.com/renarchi/Re-SISR/releases/tag/Fallin"
     }
-
   ],
   "gallery": [
     {
       "title": "Fallin_re Showcase",
       "desc": "Comparison on anime scenes. Compared to previous Fallin models (Soft & Strong), better details, better lines and the aliasing problem is fixed",
       "imgsli": "https://imgsli.com/NDQ0NzMy",
-      "thumbnail": "https://github.com/renarchi.png" 
+      "thumbnail": ""
     },
-
     {
       "title": "Fallin 'Soft'",
       "desc": "Safe choice for 1080p. Excellent at removing compression artifacts and denoising without oversharpening.",
@@ -49,17 +45,16 @@
       "imgsli": "https://imgsli.com/NDQ0NzUz",
       "thumbnail": ""
     },
-
     {
       "title": "4x_Alchemy Showcase",
       "desc": "4x_Alchemy showcase on manga covers.",
       "imgsli": "https://imgsli.com/NDQ0NzI2",
-      "thumbnail": "https://github.com/renarchi.png"
+      "thumbnail": ""
     }
   ],
   "changelog": [
     {
-      "date": "23 jan 2026",
+      "date": "23 Jan 2026",
       "title": "Migrated to Imgsli",
       "content": "Moved all visual benchmarks to Imgsli for better interactive comparison tools."
     },
@@ -68,7 +63,6 @@
       "title": "Fallin_re (WIP) Showcase Live",
       "content": "Transitioned Fallin model to private showcase."
     },
-
     {
       "date": "14 Sep 2025",
       "title": "Fallin Released",
@@ -79,6 +73,5 @@
       "title": "Project Initialization & Alchemy",
       "content": "Repository established. 4x_Alchemy released as the first public stable model for Manga Cover/Webtoons."
     }
-    
   ]
 }
