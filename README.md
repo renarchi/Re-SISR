@@ -6,6 +6,7 @@
 [![Website Status](https://img.shields.io/website?url=https%3A%2F%2Frenarchi.github.io%2FRe-SISR%2F&label=Project%20Dashboard&style=for-the-badge&logo=github&color=2ea44f)](https://renarchi.github.io/Re-SISR/)
 [![License](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg?style=for-the-badge)](https://creativecommons.org/licenses/by/4.0/)
 [![Releases](https://img.shields.io/github/v/release/renarchi/Re-SISR?style=for-the-badge&color=blueviolet&label=Download%20Models)](https://github.com/renarchi/Re-SISR/releases)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.com/invite/e5JNFpGr4W)
 
 <br>
 <br>
