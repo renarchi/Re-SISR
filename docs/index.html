@@ -16,7 +16,8 @@
   <link rel="icon" type="image/jpeg" href="./renarchi.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Sans+Mono:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Sans+Mono:wght@400&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=VT323&family=Noto+Sans+Mono:wght@400&display=swap" rel="stylesheet"></noscript>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -33,23 +34,23 @@
 
     /* Grain */
     #grain {
-      position:fixed; inset:0; z-index:3; pointer-events:none;
+      position:fixed; inset:-80px; z-index:3; pointer-events:none;
       opacity:0.06;
       animation: grain-shift 0.1s steps(1) infinite;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
       background-size: 200px 200px;
     }
     @keyframes grain-shift {
-      0%  { background-position:   0px   0px; }
-      10% { background-position: -35px  18px; }
-      20% { background-position:  55px -22px; }
-      30% { background-position: -12px  44px; }
-      40% { background-position:  68px   8px; }
-      50% { background-position: -55px -38px; }
-      60% { background-position:  22px  60px; }
-      70% { background-position: -66px  12px; }
-      80% { background-position:  42px -50px; }
-      90% { background-position: -18px  28px; }
+      0%  { transform: translate3d(  0px,   0px, 0); }
+      10% { transform: translate3d(-35px,  18px, 0); }
+      20% { transform: translate3d( 55px, -22px, 0); }
+      30% { transform: translate3d(-12px,  44px, 0); }
+      40% { transform: translate3d( 68px,   8px, 0); }
+      50% { transform: translate3d(-55px, -38px, 0); }
+      60% { transform: translate3d( 22px,  60px, 0); }
+      70% { transform: translate3d(-66px,  12px, 0); }
+      80% { transform: translate3d( 42px, -50px, 0); }
+      90% { transform: translate3d(-18px,  28px, 0); }
     }
 
     /* Scanlines — breathing / visual hum */
@@ -180,13 +181,6 @@
       opacity:0; transition:opacity 0.8s ease;
     }
     #ui.visible { opacity:1; }
-
-    .layer-label {
-      font-size:clamp(0.8rem,1.7vw,1rem);
-      color:#444; letter-spacing:0.45em;
-      text-transform:uppercase; margin-bottom:12px;
-      transition:opacity 0.3s;
-    }
 
     .title-wrap { position:relative; }
     .title-wrap::after {
@@ -396,18 +390,22 @@
     }
     #wl-banner.visible { opacity:1; }
 
-    /* Cursor */
+    /* Cursor — outer node moves via transform (no layout), inner core scales */
     #cursor {
-      position:fixed; z-index:1000; pointer-events:none;
+      position:fixed; top:0; left:0; z-index:1000; pointer-events:none;
+      transform:translate3d(-9999px,-9999px,0);
+    }
+    #cursor-core {
+      display:block; position:relative;
       transform:translate(-50%,-50%);
       width:16px; height:16px;
       transition:transform 0.08s;
     }
-    #cursor::before,#cursor::after {
+    #cursor-core::before,#cursor-core::after {
       content:''; position:absolute; background:#fff; opacity:0.65;
     }
-    #cursor::before { width:100%; height:1px; top:50%; transform:translateY(-50%); }
-    #cursor::after  { width:1px;  height:100%; left:50%; transform:translateX(-50%); }
+    #cursor-core::before { width:100%; height:1px; top:50%; transform:translateY(-50%); }
+    #cursor-core::after  { width:1px;  height:100%; left:50%; transform:translateX(-50%); }
 
     @media (max-width:600px) {
       .crn { display:none; }
@@ -420,7 +418,8 @@
     /* ── Performance hints ─────────────────────── */
     #cursor      { will-change: transform; }
     #lain-ascii  { will-change: filter; }
-    #grain       { will-change: background-position; contain: layout paint style; }
+    #grain       { will-change: transform; contain: layout paint style; }
+    #crt-beam    { will-change: transform; }
     #scanlines   { contain: layout paint style; }
     #vignette    { contain: layout paint style; }
     #sigil       { contain: layout paint style; }
@@ -429,11 +428,11 @@
 
     /* ── CRT beam ──────────────────────────────── */
     #crt-beam {
-      position:fixed; left:0; right:0; height:3px; z-index:6; pointer-events:none;
+      position:fixed; left:0; right:0; top:-3px; height:3px; z-index:6; pointer-events:none;
       background:linear-gradient(to bottom,transparent,rgba(255,255,255,0.022),transparent);
       animation:crt-beam-move 8s linear infinite;
     }
-    @keyframes crt-beam-move { 0%{top:-3px} 100%{top:100vh} }
+    @keyframes crt-beam-move { 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(0,calc(100vh + 3px),0)} }
 
     /* ── Background grid ────────────────────────── */
     #grid-overlay {
@@ -532,6 +531,13 @@
       #lain-ascii { opacity:0.06 !important; }
     }
 
+    /* ── prefers-reduced-motion ─────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      #grain, #scanlines, #vignette, #sigil, #crt-beam, #lain-ascii,
+      .title, .blink, .enter-btn:hover { animation:none; }
+      .title::before, .title::after { animation:none; opacity:0; }
+    }
+
     /* ── Phosphor colour themes ─────────────────── */
     body.amber #field, body.amber #constellation { filter: sepia(1) saturate(3) hue-rotate(5deg) brightness(0.88); }
     body.amber .title   { color:rgba(230,160,40,0.90) !important; text-shadow:0 0 8px rgba(230,160,40,0.35),0 0 22px rgba(200,120,20,0.15),0 0 45px rgba(180,100,10,0.07) !important; }
@@ -595,7 +601,6 @@
   <div class="crn br"></div>
 
   <div id="ui">
-    <span class="layer-label" id="layer-lbl">LAYER 07 : RE-SISR</span>
     <div class="title-wrap">
       <span class="title" id="main-title" data-text="RENARCHI">RENARCHI</span>
     </div>
@@ -615,14 +620,13 @@
   <div id="mem-ptr">MEM: 0x0000&#x2191;</div>
   <div id="node-info">NODE: RE-SISR // LAYER 07</div>
   <div id="fps-debug"></div>
-  <div id="cursor"></div>
+  <div id="cursor"><span id="cursor-core"></span></div>
   <div id="secret-terminal"></div>
   <div id="wl-banner">&#8212; WORLDLINE SHIFT DETECTED // DIVERGENCE COMPENSATING &#8212;</div>
 
   <!-- Right-click context menu -->
   <div id="ctx-menu">
     <div class="ctx-item" id="ctx-connect">&gt; CONNECT</div>
-    <div class="ctx-item" id="ctx-layer">&gt; LAYER INFO</div>
     <div class="ctx-item" id="ctx-who">&gt; WHO ARE YOU</div>
   </div>
 
@@ -669,6 +673,7 @@
 // ─── DOM refs ─────────────────────────────────────────────────────────────────
 const flashEl     = document.getElementById('flash');
 const curEl       = document.getElementById('cursor');
+const curCore     = document.getElementById('cursor-core');
 const bootEl      = document.getElementById('boot-overlay');
 const bootTextEl  = document.getElementById('boot-text');
 const uiEl        = document.getElementById('ui');
@@ -684,9 +689,6 @@ const nodeInfoEl  = document.getElementById('node-info');
 const dbgEl       = document.getElementById('fps-debug');
 
 let mx = -9999, my = -9999;
-let clicks = [];
-let impactBright = 0; // consumed in render loop — 1-frame impact flash
-let gyroX = 0, gyroY = 0;
 
 // ─── URL flags ────────────────────────────────────────────────────────────────
 const PARAMS  = new URLSearchParams(location.search);
@@ -734,6 +736,7 @@ let bootLineIdx = 0, bootAccum = '';
 
 function bootStep() {
   if (bootLineIdx >= bootLines.length) {
+    engSend({ t: 'run', v: true });   // warm the field up behind the overlay
     setTimeout(() => {
       bootEl.style.opacity = '0';
       // Char field reveals top-to-bottom as boot fades
@@ -758,64 +761,483 @@ function bootStep() {
 }
 setTimeout(bootStep, 350);
 
-// ─── Canvas setup ─────────────────────────────────────────────────────────────
-const canvas    = document.getElementById('field');
-const conCanvas = document.getElementById('constellation');
-const ctx       = canvas.getContext('2d', { alpha: false });
+// ─── Field engine ─────────────────────────────────────────────────────────────
+// Self-contained renderer for the ASCII field + constellation. Runs inside a
+// Worker via OffscreenCanvas when supported (keeps the main thread free for UI),
+// or inline on the main thread as fallback. Must not touch outer scope.
+function FieldEngine(canvas, conCanvas, opts) {
+  const C = [
+    ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+    '·','·','.','.', ',','`',"'",'~','-','_',
+    ':',';','=','|','/','\\','!','?','+',
+    '*','x','z','o','r','s','#','%','&',
+    '▒','░','▓','█','▀','▄','▌','▐',
+    '│','─','┼','╬','╪','┤','├','┬',
+  ];
+  const C_LEN    = C.length - 1;
+  const FS       = 13;
+  const CW       = FS * 0.59;
+  const CH       = FS * 1.20;
+  const MR       = 155;
+  const MR2      = MR * MR;
+  const FONT_STR = FS + "px 'VT323','Courier New',monospace";
 
-const C = [
-  ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-  '\u00b7','\u00b7','.','.', ',','`',"'",'~','-','_',
-  ':',';','=','|','/','\\','!','?','+',
-  '*','x','z','o','r','s','#','%','&',
-  '\u2592','\u2591','\u2593','\u2588','\u2580','\u2584','\u258c','\u2590',
-  '\u2502','\u2500','\u253c','\u256c','\u256a','\u2524','\u251c','\u252c',
-];
-const C_LEN    = C.length - 1;
-const FS       = 13;
-const CW       = FS * 0.59;
-const CH       = FS * 1.20;
-const MR       = 155;
-const MR2      = MR * MR;
-const FONT_STR = `${FS}px 'VT323','Courier New',monospace`;
-const COLORS   = Array.from({ length: 256 }, (_, i) => `rgb(${i},${i},${i})`);
+  const ctx    = canvas.getContext('2d', { alpha: false, desynchronized: true });
+  const conCtx = conCanvas.getContext('2d');
 
-let W, H, COLS, ROWS;
-let tears = [], t = 0, frame = 0;
-let waveBoost = 0;
-let shieldCache = new Float32Array(0);
+  const CON_BASE = [
+    [0.08,0.12],[0.28,0.06],[0.52,0.10],[0.74,0.07],[0.91,0.16],
+    [0.94,0.44],[0.88,0.72],[0.72,0.90],[0.48,0.93],[0.22,0.87],
+    [0.06,0.62],[0.10,0.35],[0.35,0.50],[0.65,0.50],
+  ];
+  const CON_EDGES = [
+    [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,0],
+    [1,12],[3,13],[5,13],[7,12],[12,13],[11,12],[2,13],
+  ];
+  const conNodes = CON_BASE.map(([bx,by]) => ({ bx, by, x:bx, y:by }));
 
-function buildShieldCache() {
-  shieldCache = new Float32Array(COLS * ROWS);
-  const hw = W * 0.5, hh = H * 0.5, sw = W * 0.25, sh = H * 0.21;
-  for (let row = 0; row < ROWS; row++) {
-    const cy = row * CH + CH * 0.5;
-    const dy = (cy - hh) / sh, dy2 = dy * dy;
-    const base = row * COLS;
-    for (let col = 0; col < COLS; col++) {
-      const cx = col * CW + CW * 0.5;
-      const dx = (cx - hw) / sw;
-      const d  = Math.sqrt(dx * dx + dy2);
-      shieldCache[base + col] = Math.min(1, Math.max(0, (d - 0.5) / 0.85));
+  let W, H, COLS, ROWS;
+  let tears = [], clicks = [], t = 0, frame = 0;
+  let waveBoost = 0, impactBright = 0;
+  let mx = -9999, my = -9999, gyroX = 0, gyroY = 0;
+  let running = !!opts.run;
+  let shieldCache = new Float32Array(0);
+  let conDirty = true, conMx = 1e9, conMy = 1e9;
+
+  // Wave tables — the four sin/cos field terms are separable (sin(a+b) expansion),
+  // so per-frame trig drops from COLS*ROWS*4 calls to COLS*7 + ROWS.
+  let rowBs, rowBc, rowCs, rowCc, rowDs, rowDc;
+  let colA, colBs, colBc, colCs, colCc, colDs, colDc;
+  function buildWaveTables() {
+    rowBs = new Float32Array(ROWS); rowBc = new Float32Array(ROWS);
+    rowCs = new Float32Array(ROWS); rowCc = new Float32Array(ROWS);
+    rowDs = new Float32Array(ROWS); rowDc = new Float32Array(ROWS);
+    for (let row = 0; row < ROWS; row++) {
+      rowBs[row] = Math.sin(row * 0.055); rowBc[row] = Math.cos(row * 0.055);
+      rowCs[row] = Math.sin(row * 0.042); rowCc[row] = Math.cos(row * 0.042);
+      rowDs[row] = Math.sin(row * 0.04);  rowDc[row] = Math.cos(row * 0.04);
+    }
+    colA  = new Float32Array(COLS);
+    colBs = new Float32Array(COLS); colBc = new Float32Array(COLS);
+    colCs = new Float32Array(COLS); colCc = new Float32Array(COLS);
+    colDs = new Float32Array(COLS); colDc = new Float32Array(COLS);
+  }
+
+  const rowCkArr = [], rowCkDy2 = [];
+
+  // Glyph masks — each glyph is rasterized once per subpixel phase into an
+  // alpha mask; frames are composed into a raw pixel buffer and pushed with a
+  // single putImageData, replacing thousands of fillText calls per frame.
+  const GLYPHS = C.filter((g, i) => g !== ' ' && C.indexOf(g) === i);
+  const GIDX   = new Int16Array(C.length);
+  C.forEach((g, i) => { GIDX[i] = g === ' ' ? -1 : GLYPHS.indexOf(g); });
+  const PHASES = 4;
+  const MW = Math.ceil(CW) + 4;
+  const MH = Math.ceil(CH) + 4;
+  const NV = GLYPHS.length * PHASES;
+  const maskA  = new Array(NV);
+  const maskX0 = new Int16Array(NV), maskX1 = new Int16Array(NV);
+  const maskY0 = new Int16Array(NV), maskY1 = new Int16Array(NV);
+  let img = null, buf32 = null;
+  let pvx = 0, pvy = 0, lastMouseT = 0;
+
+  function buildGlyphMasks() {
+    const cv = (typeof OffscreenCanvas !== 'undefined')
+      ? new OffscreenCanvas(MW, MH)
+      : document.createElement('canvas');
+    cv.width = MW; cv.height = MH;
+    const g = cv.getContext('2d', { willReadFrequently: true });
+    for (let gi = 0; gi < GLYPHS.length; gi++) {
+      for (let ph = 0; ph < PHASES; ph++) {
+        g.clearRect(0, 0, MW, MH);
+        g.font = FONT_STR; g.textBaseline = 'top'; g.fillStyle = '#fff';
+        g.fillText(GLYPHS[gi], 2 + ph / PHASES, 2);
+        const d = g.getImageData(0, 0, MW, MH).data;
+        const a = new Uint8Array(MW * MH);
+        let x0 = MW, x1 = -1, y0 = MH, y1 = -1;
+        for (let i = 0, p = 3; i < a.length; i++, p += 4) {
+          const al = d[p];
+          a[i] = al;
+          if (al) {
+            const xx = i % MW, yy = (i / MW) | 0;
+            if (xx < x0) x0 = xx; if (xx > x1) x1 = xx;
+            if (yy < y0) y0 = yy; if (yy > y1) y1 = yy;
+          }
+        }
+        const vi = gi * PHASES + ph;
+        maskA[vi] = a;
+        maskX0[vi] = x0; maskX1[vi] = x1;
+        maskY0[vi] = y0; maskY1[vi] = y1;
+      }
     }
   }
+  buildGlyphMasks();
+
+  function blit(vi, dx, dy, bri) {
+    let x0 = maskX0[vi], x1 = maskX1[vi], y0 = maskY0[vi], y1 = maskY1[vi];
+    if (x1 < x0) return;
+    if (dx + x0 < 0) x0 = -dx;
+    if (dx + x1 >= W) x1 = W - 1 - dx;
+    if (dy + y0 < 0) y0 = -dy;
+    if (dy + y1 >= H) y1 = H - 1 - dy;
+    if (x1 < x0 || y1 < y0) return;
+    const m = maskA[vi];
+    for (let yy = y0; yy <= y1; yy++) {
+      const mo = yy * MW;
+      const bo = (dy + yy) * W + dx;
+      for (let xx = x0; xx <= x1; xx++) {
+        const am = m[mo + xx];
+        if (am === 0) continue;
+        const o = bo + xx;
+        let v;
+        if (am === 255) v = bri;
+        else { const dg = buf32[o] & 0xff; v = (am * bri + (255 - am) * dg) >> 8; }
+        buf32[o] = 0xFF000000 | (v << 16) | (v << 8) | v;
+      }
+    }
+  }
+
+  function buildShieldCache() {
+    shieldCache = new Float32Array(COLS * ROWS);
+    const hw = W * 0.5, hh = H * 0.5, sw = W * 0.25, sh = H * 0.21;
+    for (let row = 0; row < ROWS; row++) {
+      const cy = row * CH + CH * 0.5;
+      const dy = (cy - hh) / sh, dy2 = dy * dy;
+      const base = row * COLS;
+      for (let col = 0; col < COLS; col++) {
+        const cx = col * CW + CW * 0.5;
+        const dx = (cx - hw) / sw;
+        const d  = Math.sqrt(dx * dx + dy2);
+        shieldCache[base + col] = Math.min(1, Math.max(0, (d - 0.5) / 0.85));
+      }
+    }
+  }
+
+  function resize(w, h) {
+    W = canvas.width  = w;
+    H = canvas.height = h;
+    COLS = Math.ceil(W / CW) + 2;
+    ROWS = Math.ceil(H / CH) + 2;
+    conCanvas.width  = w;
+    conCanvas.height = h;
+    img   = ctx.createImageData(W, H);
+    buf32 = new Uint32Array(img.data.buffer);
+    buildShieldCache();
+    buildWaveTables();
+    conDirty = true;
+  }
+  resize(opts.w, opts.h);
+
+  function tryTear() {
+    if (Math.random() < 0.005) {
+      tears.push({
+        rowY:   Math.floor(Math.random() * ROWS),
+        height: 1 + Math.floor(Math.random() * 3),
+        shift:  (Math.random() - 0.5) * 20,
+        life:   3 + Math.floor(Math.random() * 6),
+      });
+    }
+  }
+
+  function renderField() {
+    frame++;
+    tryTear();
+    let tearRows = null;
+    if (tears.length) {
+      tears = tears.filter(r => r.life > 0);
+      tears.forEach(r => r.life--);
+      if (tears.length) {
+        tearRows = new Map();
+        tears.forEach(r => { for (let i = 0; i < r.height; i++) tearRows.set(r.rowY + i, r); });
+      }
+    }
+
+    // Impact frame — 1 frame uniform brightening, consumed then zeroed
+    let basePx = 0xFF000000;
+    if (impactBright > 0) {
+      const bg = (impactBright * 255) | 0;
+      basePx |= (bg << 16) | (bg << 8) | bg;
+      impactBright = 0;
+    }
+    buf32.fill(basePx);
+
+    // Lead the glow slightly ahead of the last mouse sample to cancel the
+    // worker→compositor latency, so it stays glued to the DOM cursor
+    let emx = mx, emy = my;
+    if (pvx !== 0 || pvy !== 0) {
+      const age = performance.now() - lastMouseT;
+      if (age < 50) {
+        const lead = age + 16 > 32 ? 32 : age + 16;
+        let ox = pvx * lead, oy = pvy * lead;
+        const om2 = ox * ox + oy * oy;
+        if (om2 > 2304) { const s = 48 / Math.sqrt(om2); ox *= s; oy *= s; }
+        emx += ox; emy += oy;
+      }
+    }
+
+    const ta   = t * 0.28 + gyroX * 0.4;
+    const tb   = t * 0.52;
+    const tc   = t * 0.17 + gyroY * 0.3;
+    const te   = t * 0.20;
+    const tdS  = Math.sin(t * 0.07);
+    const tm1  = t * 3.2;
+    const isEF = (frame & 1) === 0;
+
+    // Per-frame column tables (time-dependent halves of the separable wave terms)
+    for (let col = 0; col < COLS; col++) {
+      colA[col] = Math.sin(col * 0.07 + ta);
+      const ub = col * 0.032 + tb;
+      colBs[col] = Math.sin(ub) * 0.78; colBc[col] = Math.cos(ub) * 0.78;
+      const uc = col * 0.042 + tc;
+      colCs[col] = Math.sin(uc) * 0.55; colCc[col] = Math.cos(uc) * 0.55;
+      const ud = col * 0.11 * tdS;
+      colDs[col] = Math.sin(ud) * 0.35; colDc[col] = Math.cos(ud) * 0.35;
+    }
+
+    const nClicks = clicks.length;
+
+    for (let row = 0; row < ROWS; row++) {
+      const rowBase = row * COLS;
+      const py      = row * CH;
+      const cy      = py + CH * 0.5;
+      const tear    = tearRows ? tearRows.get(row) : undefined;
+      const rowCos  = Math.cos(row * 0.09 + te);
+      const rBs = rowBs[row], rBc = rowBc[row];
+      const rCs = rowCs[row], rCc = rowCc[row];
+      const rDs = rowDs[row], rDc = rowDc[row];
+      const pyI  = Math.floor(py) - 2;
+      const dym  = cy - emy;
+      const dym2 = dym * dym;
+      const rowMouse = dym2 < MR2;
+
+      // Ring cull: keep only clicks whose ripple can touch this row
+      let nCk = 0;
+      for (let ci = 0; ci < nClicks; ci++) {
+        const ck = clicks[ci], dyk = cy - ck.y, lim = ck.r + 50;
+        if (dyk > lim || dyk < -lim) continue;
+        rowCkArr[nCk] = ck; rowCkDy2[nCk] = dyk * dyk; nCk++;
+      }
+
+      for (let col = 0; col < COLS; col++) {
+        let px = col * CW;
+        if (tear) px += tear.shift;
+        if (px < -CW || px > W + CW) continue;
+
+        const v = (colA[col] * rowCos
+                 + colBs[col] * rBc - colBc[col] * rBs
+                 + colCc[col] * rCc - colCs[col] * rCs
+                 + colDs[col] * rDc + colDc[col] * rDs) / 2.65;
+
+        const flk = isEF ? Math.random() * 0.65 : 0.32;
+        let combined = v * 0.50 + (flk - 0.32) * 0.50;
+        combined *= shieldCache[rowBase + col];
+
+        const cx = px + CW * 0.5;
+        let mf = 0;
+        if (rowMouse) {
+          const dxm = cx - emx;
+          const dm2 = dxm * dxm + dym2;
+          if (dm2 < MR2) {
+            const dm = Math.sqrt(dm2);
+            mf = 1 - dm / MR;
+            combined += mf * 0.85 * (Math.sin(dm * 0.055 - tm1 + Math.atan2(dym, dxm)) * 0.5 + 0.5);
+          }
+        }
+
+        let rf = 0;
+        for (let ci = 0; ci < nCk; ci++) {
+          const ck = rowCkArr[ci];
+          const dxk = cx - ck.x, lim = ck.r + 50;
+          if (dxk > lim || dxk < -lim) continue;
+          const dd   = Math.sqrt(dxk * dxk + rowCkDy2[ci]);
+          const diff = Math.abs(dd - ck.r);
+          if (diff < 50) {
+            const amp = ck.life * (1 - diff / 50);
+            combined += Math.sin((dd - ck.r) * 0.22) * amp * 2.8;
+            if (amp > rf) rf = amp;
+          }
+        }
+
+        const n  = Math.max(0, Math.min(1, (combined + 0.82) / 1.64));
+        const gi = GIDX[(n * C_LEN) | 0];
+        if (gi < 0) continue;
+
+        let bri = (n * n * 210) | 0;
+        if (mf > 0) bri = Math.min(255, bri + ((mf  * 55)  | 0));
+        if (rf > 0) bri = Math.min(255, bri + ((rf  * 210) | 0));
+        if (tear)   bri = Math.min(255, 260 - bri);
+        if (bri < 10) continue;
+
+        const fx = Math.floor(px);
+        blit(gi * PHASES + (((px - fx) * PHASES) | 0), fx - 2, pyI, bri);
+      }
+    }
+
+    ctx.putImageData(img, 0, 0);
+
+    clicks.forEach(c => { c.r += 4.8; c.life -= 0.024; });
+    clicks = clicks.filter(c => c.life > 0);
+    waveBoost *= 0.94;
+    t += 0.011 + waveBoost * 0.008;
+  }
+
+  function renderCon() {
+    // Node positions are a pure function of the mouse — skip redraw when unchanged
+    if (!conDirty && mx === conMx && my === conMy) return;
+    conDirty = false; conMx = mx; conMy = my;
+    const cw = conCanvas.width, ch = conCanvas.height;
+    conCtx.clearRect(0, 0, cw, ch);
+    for (let i = 0; i < conNodes.length; i++) {
+      const n = conNodes[i];
+      const bxPx = n.bx * cw, byPx = n.by * ch;
+      const dx = mx - bxPx, dy = my - byPx;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const infl = Math.max(0, 1 - dist / 220) * 28;
+      const ang  = Math.atan2(dy, dx);
+      n.x = (bxPx - Math.cos(ang) * infl) / cw;
+      n.y = (byPx - Math.sin(ang) * infl) / ch;
+    }
+    conCtx.strokeStyle = 'rgba(255,255,255,0.055)';
+    conCtx.lineWidth   = 0.6;
+    conCtx.beginPath();
+    for (let i = 0; i < CON_EDGES.length; i++) {
+      const na = conNodes[CON_EDGES[i][0]], nb = conNodes[CON_EDGES[i][1]];
+      conCtx.moveTo(na.x * cw, na.y * ch);
+      conCtx.lineTo(nb.x * cw, nb.y * ch);
+    }
+    conCtx.stroke();
+    conCtx.fillStyle = 'rgba(255,255,255,0.18)';
+    conCtx.beginPath();
+    for (let i = 0; i < conNodes.length; i++) {
+      const n = conNodes[i];
+      conCtx.moveTo(n.x * cw + 1.5, n.y * ch);
+      conCtx.arc(n.x * cw, n.y * ch, 1.5, 0, Math.PI * 2);
+    }
+    conCtx.fill();
+  }
+
+  let fpsN = 0, fpsT = 0;
+  const raf = (typeof requestAnimationFrame === 'function')
+    ? (cb) => requestAnimationFrame(cb)
+    : (cb) => setTimeout(() => cb(performance.now()), 16);
+  function loop(ts) {
+    raf(loop);
+    if (!running) return;
+    renderField();
+    renderCon();
+    if (api.onFps) {
+      fpsN++;
+      if (ts - fpsT > 1000) {
+        api.onFps('FPS:' + fpsN + ' | ' + COLS + '×' + ROWS + ' | CK:' + clicks.length);
+        fpsN = 0; fpsT = ts;
+      }
+    }
+  }
+  raf(loop);
+
+  const api = {
+    onFps: null,
+    resize,
+    refreshGlyphs: buildGlyphMasks,
+    setMouse(x, y) {
+      const now = performance.now();
+      const dt = now - lastMouseT;
+      if (dt > 0 && dt < 100) { pvx = (x - mx) / dt; pvy = (y - my) / dt; }
+      else { pvx = 0; pvy = 0; }
+      mx = x; my = y; lastMouseT = now;
+    },
+    addClick(x, y) { clicks.push({ x, y, r: 0, life: 1 }); },
+    setGyro(x, y)  { gyroX = x; gyroY = y; },
+    wheel(d)       { waveBoost = Math.min(3, waveBoost + Math.abs(d) * 0.003); },
+    setBoost(v)    { waveBoost = v; },
+    impact(v)      { impactBright = v; },
+    setRunning(v)  { running = v; },
+  };
+  return api;
+}
+
+function handleEngineMsg(eng, m) {
+  if      (m.t === 'mouse')  eng.setMouse(m.x, m.y);
+  else if (m.t === 'click')  eng.addClick(m.x, m.y);
+  else if (m.t === 'resize') eng.resize(m.w, m.h);
+  else if (m.t === 'gyro')   eng.setGyro(m.x, m.y);
+  else if (m.t === 'wheel')  eng.wheel(m.d);
+  else if (m.t === 'boost')  eng.setBoost(m.v);
+  else if (m.t === 'impact') eng.impact(m.v);
+  else if (m.t === 'run')    eng.setRunning(m.v);
+}
+
+function workerMain() {
+  let eng = null;
+  self.onmessage = (e) => {
+    const m = e.data;
+    if (m.t === 'init') {
+      eng = FieldEngine(m.canvas, m.con, m.opts);
+      if (m.opts.fps) eng.onFps = (s) => self.postMessage({ t: 'fps', s });
+    } else if (m.t === 'font') {
+      // A worker has its own FontFaceSet — VT323 must be registered here too
+      try {
+        const f = new FontFace('VT323', m.data);
+        f.load().then((ff) => { self.fonts.add(ff); if (eng) eng.refreshGlyphs(); }).catch(() => {});
+      } catch (err) {}
+    } else if (eng) {
+      handleEngineMsg(eng, m);
+    }
+  };
+}
+
+// ─── Canvas / engine bootstrap ────────────────────────────────────────────────
+const canvas    = document.getElementById('field');
+const conCanvas = document.getElementById('constellation');
+
+let W = window.innerWidth, H = window.innerHeight;
+let engineWorker = null, engineLocal = null;
+const ENGINE_OPTS = { w: W, h: H, run: false, fps: DEBUG };
+
+if (window.Worker && canvas.transferControlToOffscreen) {
+  try {
+    const src = FieldEngine.toString() + '\n' + handleEngineMsg.toString() +
+                '\n(' + workerMain.toString() + ')();';
+    const worker = new Worker(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+    worker.onmessage = (e) => { if (e.data.t === 'fps') dbgEl.textContent = e.data.s; };
+    const off    = canvas.transferControlToOffscreen();
+    const offCon = conCanvas.transferControlToOffscreen();
+    worker.postMessage({ t: 'init', canvas: off, con: offCon, opts: ENGINE_OPTS }, [off, offCon]);
+    engineWorker = worker;
+    // Ship VT323 to the worker (its FontFaceSet is separate from the document's;
+    // the font bytes come out of the HTTP cache in practice)
+    fetch('https://fonts.googleapis.com/css2?family=VT323&display=swap')
+      .then((r) => r.text())
+      .then((css) => {
+        const m = css.match(/url\((https:[^)]+?\.woff2)\)/);
+        return m ? fetch(m[1]).then((r) => r.arrayBuffer()) : null;
+      })
+      .then((buf) => { if (buf) engineWorker.postMessage({ t: 'font', data: buf }, [buf]); })
+      .catch(() => {});
+  } catch (err) {
+    engineWorker = null;
+  }
+}
+if (!engineWorker) {
+  engineLocal = FieldEngine(canvas, conCanvas, ENGINE_OPTS);
+  if (DEBUG) engineLocal.onFps = (s) => { dbgEl.textContent = s; };
+  if (document.fonts) document.fonts.ready.then(() => engineLocal.refreshGlyphs());
+}
+
+function engSend(m) {
+  if (engineWorker) engineWorker.postMessage(m);
+  else handleEngineMsg(engineLocal, m);
 }
 
 let resizeTimer = 0;
 function doResize() {
-  W = canvas.width  = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-  COLS = Math.ceil(W / CW) + 2;
-  ROWS = Math.ceil(H / CH) + 2;
-  conCanvas.width  = W;
-  conCanvas.height = H;
-  buildShieldCache();
+  W = window.innerWidth;
+  H = window.innerHeight;
+  engSend({ t: 'resize', w: W, h: H });
 }
-doResize();
 window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(doResize, 150); });
 
-// ─── Debug FPS ────────────────────────────────────────────────────────────────
-let dbgFrames = 0, dbgTime = performance.now();
+
 
 // ─── Input ────────────────────────────────────────────────────────────────────
 let cursorPending = false, cursorHideTimer = 0;
@@ -828,11 +1250,12 @@ function resetCursorTimer() {
 
 window.addEventListener('mousemove', e => {
   mx = e.clientX; my = e.clientY;
+  engSend({ t: 'mouse', x: mx, y: my });
   resetCursorTimer();
   if (!cursorPending) {
     cursorPending = true;
     requestAnimationFrame(() => {
-      curEl.style.left = mx + 'px'; curEl.style.top = my + 'px';
+      curEl.style.transform = 'translate3d(' + mx + 'px,' + my + 'px,0)';
       cursorPending = false;
     });
   }
@@ -840,14 +1263,15 @@ window.addEventListener('mousemove', e => {
 
 // Scroll → wave boost
 window.addEventListener('wheel', e => {
-  waveBoost = Math.min(3, waveBoost + Math.abs(e.deltaY) * 0.003);
+  engSend({ t: 'wheel', d: e.deltaY });
 }, { passive: true });
 
 // Gyroscope (mobile tilt → wave offset)
 if (window.DeviceOrientationEvent) {
   window.addEventListener('deviceorientation', e => {
-    gyroX = Math.max(-1, Math.min(1, (e.gamma || 0) / 60));
-    gyroY = Math.max(-1, Math.min(1, (e.beta  || 0) / 90));
+    engSend({ t: 'gyro',
+      x: Math.max(-1, Math.min(1, (e.gamma || 0) / 60)),
+      y: Math.max(-1, Math.min(1, (e.beta  || 0) / 90)) });
   }, { passive: true });
 }
 
@@ -858,7 +1282,7 @@ const clickPhrases = [
 
 window.addEventListener('click', e => {
   if (ctxMenu.classList.contains('visible')) { ctxMenu.classList.remove('visible'); return; }
-  clicks.push({ x: e.clientX, y: e.clientY, r: 0, life: 1 });
+  engSend({ t: 'click', x: e.clientX, y: e.clientY });
   flashEl.style.opacity = '0.10';
   setTimeout(() => { flashEl.style.opacity = '0'; }, 70);
   const phrase = clickPhrases[Math.floor(Math.random() * clickPhrases.length)];
@@ -887,11 +1311,13 @@ window.addEventListener('contextmenu', e => {
 window.addEventListener('touchstart', e => {
   const tt = e.touches[0];
   mx = tt.clientX; my = tt.clientY;
-  clicks.push({ x: tt.clientX, y: tt.clientY, r: 0, life: 1 });
+  engSend({ t: 'mouse', x: mx, y: my });
+  engSend({ t: 'click', x: tt.clientX, y: tt.clientY });
 }, { passive: true });
 
 window.addEventListener('touchmove', e => {
   const tt = e.touches[0]; mx = tt.clientX; my = tt.clientY;
+  engSend({ t: 'mouse', x: mx, y: my });
 }, { passive: true });
 
 // Touch long-press → whisper
@@ -910,18 +1336,6 @@ window.addEventListener('orientationchange', () => {
   setTimeout(() => { ol.classList.remove('visible'); setTimeout(() => ol.remove(), 400); }, 1600);
 });
 
-// ─── VHS tear ─────────────────────────────────────────────────────────────────
-function tryTear() {
-  if (Math.random() < 0.005) {
-    tears.push({
-      rowY:   Math.floor(Math.random() * ROWS),
-      height: 1 + Math.floor(Math.random() * 3),
-      shift:  (Math.random() - 0.5) * 20,
-      life:   3 + Math.floor(Math.random() * 6),
-    });
-  }
-}
-
 // VHS edge static strips
 function spawnStaticStrip() {
   const el = document.createElement('div');
@@ -938,162 +1352,7 @@ function spawnStaticStrip() {
 }
 setInterval(() => { if (Math.random() < 0.22) spawnStaticStrip(); }, 2800);
 
-// ─── Field render ─────────────────────────────────────────────────────────────
-function renderField() {
-  frame++;
-  tryTear();
-  tears = tears.filter(r => r.life > 0);
-  tears.forEach(r => r.life--);
 
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, W, H);
-  // Impact frame — 1 frame white overlay, consumed then zeroed
-  if (impactBright > 0) {
-    ctx.fillStyle = `rgba(255,255,255,${impactBright})`;
-    ctx.fillRect(0, 0, W, H);
-    impactBright = 0;
-  }
-  ctx.font = FONT_STR;
-  ctx.textBaseline = 'top';
-
-  const tearRows = new Map();
-  tears.forEach(r => { for (let i = 0; i < r.height; i++) tearRows.set(r.rowY + i, r); });
-
-  const ta   = t * 0.28 + gyroX * 0.4;
-  const tb   = t * 0.52;
-  const tc   = t * 0.17 + gyroY * 0.3;
-  const te   = t * 0.20;
-  const tdS  = Math.sin(t * 0.07);
-  const tm1  = t * 3.2;
-  const isEF = (frame & 1) === 0;
-
-  for (let row = 0; row < ROWS; row++) {
-    const rowBase  = row * COLS;
-    const py       = row * CH;
-    const cy       = py + CH * 0.5;
-    const tear     = tearRows.get(row);
-    const rowCos   = Math.cos(row * 0.09 + te);
-    const rowBoff  = tb - row * 0.055;
-    const rowCbase = row * 0.042 + tc;
-    const rowDoff  = row * 0.04;
-
-    for (let col = 0; col < COLS; col++) {
-      let px = col * CW;
-      if (tear) px += tear.shift;
-      if (px < -CW || px > W + CW) continue;
-
-      const cx = px + CW * 0.5;
-      const a  = Math.sin(col * 0.07  + ta) * rowCos;
-      const b  = Math.sin(col * 0.032 + rowBoff) * 0.78;
-      const c  = Math.cos(col * 0.042 + rowCbase) * 0.55;
-      const d  = Math.sin(col * 0.11  * tdS + rowDoff) * 0.35;
-      const v  = (a + b + c + d) / 2.65;
-
-      const flk = isEF ? Math.random() * 0.65 : 0.32;
-      let combined = v * 0.50 + (flk - 0.32) * 0.50;
-      combined *= shieldCache[rowBase + col];
-
-      const dxm = cx - mx, dym = cy - my;
-      const dm2 = dxm * dxm + dym * dym;
-      let mf = 0;
-      if (dm2 < MR2) {
-        const dm = Math.sqrt(dm2);
-        mf = 1 - dm / MR;
-        combined += mf * 0.85 * (Math.sin(dm * 0.055 - tm1 + Math.atan2(dym, dxm)) * 0.5 + 0.5);
-      }
-
-      let rf = 0;
-      for (let ci = 0; ci < clicks.length; ci++) {
-        const ck   = clicks[ci];
-        const dd   = Math.sqrt((cx - ck.x) ** 2 + (cy - ck.y) ** 2);
-        const diff = Math.abs(dd - ck.r);
-        if (diff < 50) {
-          const amp = ck.life * (1 - diff / 50);
-          combined += Math.sin((dd - ck.r) * 0.22) * amp * 2.8;
-          if (amp > rf) rf = amp;
-        }
-      }
-
-      const n  = Math.max(0, Math.min(1, (combined + 0.82) / 1.64));
-      const ch = C[Math.floor(n * C_LEN)];
-      if (ch === ' ') continue;
-
-      let bri = (n * n * 210) | 0;
-      if (mf > 0) bri = Math.min(255, bri + ((mf  * 55)  | 0));
-      if (rf > 0) bri = Math.min(255, bri + ((rf  * 210) | 0));
-      if (tear)   bri = Math.min(255, 260 - bri);
-      if (bri < 10) continue;
-
-      ctx.fillStyle = COLORS[bri];
-      ctx.fillText(ch, px, py);
-    }
-  }
-
-  clicks.forEach(c => { c.r += 4.8; c.life -= 0.024; });
-  clicks = clicks.filter(c => c.life > 0);
-  waveBoost *= 0.94;
-  t += 0.011 + waveBoost * 0.008;
-}
-
-// ─── Constellation ────────────────────────────────────────────────────────────
-const conCtx = conCanvas.getContext('2d');
-const CON_BASE = [
-  [0.08,0.12],[0.28,0.06],[0.52,0.10],[0.74,0.07],[0.91,0.16],
-  [0.94,0.44],[0.88,0.72],[0.72,0.90],[0.48,0.93],[0.22,0.87],
-  [0.06,0.62],[0.10,0.35],[0.35,0.50],[0.65,0.50],
-];
-const CON_EDGES = [
-  [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,0],
-  [1,12],[3,13],[5,13],[7,12],[12,13],[11,12],[2,13],
-];
-const conNodes = CON_BASE.map(([bx,by]) => ({ bx, by, x:bx, y:by }));
-
-function renderCon() {
-  const cw = conCanvas.width, ch = conCanvas.height;
-  conCtx.clearRect(0, 0, cw, ch);
-  for (let i = 0; i < conNodes.length; i++) {
-    const n = conNodes[i];
-    const bxPx = n.bx * cw, byPx = n.by * ch;
-    const dx = mx - bxPx, dy = my - byPx;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const infl = Math.max(0, 1 - dist / 220) * 28;
-    const ang  = Math.atan2(dy, dx);
-    n.x = (bxPx - Math.cos(ang) * infl) / cw;
-    n.y = (byPx - Math.sin(ang) * infl) / ch;
-  }
-  conCtx.strokeStyle = 'rgba(255,255,255,0.055)';
-  conCtx.lineWidth   = 0.6;
-  for (let i = 0; i < CON_EDGES.length; i++) {
-    const na = conNodes[CON_EDGES[i][0]], nb = conNodes[CON_EDGES[i][1]];
-    conCtx.beginPath();
-    conCtx.moveTo(na.x * cw, na.y * ch);
-    conCtx.lineTo(nb.x * cw, nb.y * ch);
-    conCtx.stroke();
-  }
-  conCtx.fillStyle = 'rgba(255,255,255,0.18)';
-  for (let i = 0; i < conNodes.length; i++) {
-    const n = conNodes[i];
-    conCtx.beginPath();
-    conCtx.arc(n.x * cw, n.y * ch, 1.5, 0, Math.PI * 2);
-    conCtx.fill();
-  }
-}
-
-// ─── Unified rAF loop ─────────────────────────────────────────────────────────
-function loop() {
-  renderField();
-  renderCon();
-  if (DEBUG) {
-    dbgFrames++;
-    const now = performance.now();
-    if (now - dbgTime > 1000) {
-      dbgEl.textContent = `FPS:${dbgFrames} | ${COLS}\u00d7${ROWS} | CK:${clicks.length}`;
-      dbgFrames = 0; dbgTime = now;
-    }
-  }
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
 
 // ─── Idle detection ───────────────────────────────────────────────────────────
 let idleTimer = 0, isIdle = false;
@@ -1135,7 +1394,6 @@ const divEl    = document.getElementById('div-num');
 const divBarEl = document.getElementById('div-bar');
 const sLeft    = document.getElementById('s-left');
 const sRight   = document.getElementById('s-right');
-const layerEl  = document.getElementById('layer-lbl');
 const titleEl  = document.getElementById('main-title');
 
 function makeDivBar(v) {
@@ -1172,7 +1430,7 @@ const TITLE_LEN      = TITLE_CHARS.length;
 function scrambleTitle(target) {
   titleEl.classList.remove('switching'); void titleEl.offsetWidth; titleEl.classList.add('switching');
   // ── 1-frame impact ──────────────────────────────────────────────────────────
-  impactBright = 0.042;                         // render loop consumes on next frame
+  engSend({ t: 'impact', v: 0.042 });           // engine consumes on next frame
   flashEl.style.cssText = 'opacity:0.07;transition:none;background:#fff;position:fixed;inset:0;z-index:50;pointer-events:none;';
   setTimeout(() => { flashEl.style.transition = 'opacity 0.10s'; flashEl.style.opacity = '0'; }, 42);
   const go = () => {
@@ -1202,12 +1460,8 @@ const statuses = [
   '&gt; THE WIRED IS REAL','&gt; MEMORY FRAGMENT RECOVERED','&gt; PROTOCOL SHIFT DETECTED',
   '&gt; WHO ARE YOU ?','&gt; LAYER 07 : COEXISTENCE','&gt; OPERATION SKULD INITIATED','&gt; GATEWAY ESTABLISHED',
 ];
-const layers = [
-  'LAYER 07 : RE-SISR ','LAYER 03 : PHYSICALITY','LAYER 07 : RE-SISR ',
-  'LAYER 11 : WIRED','LAYER 07 : RE-SISR ','LAYER 04 : PROTOCOL',
-];
 const titles = ['RENARCHI','RE-SISR'];
-let dIdx=0, sIdx=0, lIdx=0, titleIdx=0;
+let dIdx=0, sIdx=0, titleIdx=0;
 updateDivBar(divergences[0]);
 
 setInterval(() => { titleIdx = (titleIdx+1)%titles.length; scrambleTitle(titles[titleIdx]); }, 2500);
@@ -1223,13 +1477,6 @@ setInterval(() => {
   sLeft.style.opacity = '0';
   setTimeout(() => { sIdx=(sIdx+1)%statuses.length; sLeft.innerHTML=statuses[sIdx]+' <span class="blink">_</span>'; sLeft.style.opacity='1'; }, 280);
 }, 3800);
-
-setInterval(() => {
-  if (Math.random() < 0.4) {
-    layerEl.style.opacity = '0';
-    setTimeout(() => { lIdx=(lIdx+1)%layers.length; layerEl.textContent=layers[lIdx]; layerEl.style.opacity='1'; }, 200);
-  }
-}, 7500);
 
 // ─── CRT Clock ────────────────────────────────────────────────────────────────
 const p2 = n => String(n).padStart(2, '0');
@@ -1352,17 +1599,13 @@ window.addEventListener('keydown', e => {
     flashEl.style.transition = 'opacity 0.12s'; flashEl.style.opacity = '0.55';
     setTimeout(() => { flashEl.style.opacity = '0'; }, 200);
     showTerm('ALL LAYERS UNLOCKED\nGATE OF STEINER: OPEN\nDEUS INVOKED\n// WELCOME TO THE WIRED');
-    waveBoost = 10;
+    engSend({ t: 'boost', v: 10 });
   }
 });
 
 // ─── Context menu actions ─────────────────────────────────────────────────────
 document.getElementById('ctx-connect').addEventListener('click', () => {
   ctxMenu.classList.remove('visible'); startConnect();
-});
-document.getElementById('ctx-layer').addEventListener('click', () => {
-  ctxMenu.classList.remove('visible');
-  showTerm(`CURRENT LAYER: ${layerEl.textContent}\nDIVERGENCE: ${divEl.textContent}\nSTATUS: ONLINE`);
 });
 document.getElementById('ctx-who').addEventListener('click', () => {
   ctxMenu.classList.remove('visible');
@@ -1395,8 +1638,8 @@ function startConnect() {
 }
 
 btn.addEventListener('click', e => { e.preventDefault(); startConnect(); });
-btn.addEventListener('mouseenter', () => { curEl.style.transform = 'translate(-50%,-50%) scale(1.5)'; });
-btn.addEventListener('mouseleave', () => { curEl.style.transform = 'translate(-50%,-50%) scale(1)'; });
+btn.addEventListener('mouseenter', () => { curCore.style.transform = 'translate(-50%,-50%) scale(1.5)'; });
+btn.addEventListener('mouseleave', () => { curCore.style.transform = 'translate(-50%,-50%) scale(1)'; });
 
 // ─── Service Worker registration ──────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
