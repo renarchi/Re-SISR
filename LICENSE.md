@@ -4,12 +4,12 @@
 This repository uses two different licenses depending on when a model was released.
 
 ## 2. Legacy Models — CC BY 4.0
-Models released before the switch to CC BY-NC-SA 4.0 stay under Creative Commons Attribution 4.0 International (CC BY 4.0). That's irrevocable.
+Models released before **Adore** (April 11, 2026) — such as `4x_Alchemy` and `Fallin` — stay under Creative Commons Attribution 4.0 International (CC BY 4.0). That's irrevocable.
 
 You can share, copy, remix, and build on these models for any purpose, including commercial use. Credit **renarchi**, link the license, and note any changes. If you're unsure whether a model qualifies, check the release date or the metadata bundled with the weights.
 
 ## 3. Current & Future Models — CC BY-NC-SA 4.0
-Everything released from now on falls under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), unless you've gotten a commercial exception through `COMMERCIAL_AUTHORIZATIONS.md`.
+Everything from **Adore** (April 11, 2026) onward falls under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0), unless you've gotten a commercial exception through `COMMERCIAL_AUTHORIZATIONS.md`.
 
 You can share and adapt these models, but you must credit **renarchi**, you can't use them commercially without written permission, and any derivative must carry the same license.
 

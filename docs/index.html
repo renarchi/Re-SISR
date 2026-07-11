@@ -1640,13 +1640,6 @@ function startConnect() {
 btn.addEventListener('click', e => { e.preventDefault(); startConnect(); });
 btn.addEventListener('mouseenter', () => { curCore.style.transform = 'translate(-50%,-50%) scale(1.5)'; });
 btn.addEventListener('mouseleave', () => { curCore.style.transform = 'translate(-50%,-50%) scale(1)'; });
-
-// ─── Service Worker registration ──────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
-}
 </script>
 </body>
 </html>
