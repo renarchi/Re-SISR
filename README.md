@@ -2,6 +2,7 @@
 
 [![Repository visits](https://visitor-badge.laobi.icu/badge?page_id=renarchi.Re-SISR)](https://github.com/renarchi/Re-SISR)
 [![Total downloads](https://img.shields.io/github/downloads/renarchi/Re-SISR/total?label=total%20downloads&style=flat-square)](https://github.com/renarchi/Re-SISR/releases)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white&style=flat-square)](https://discord.com/invite/e5JNFpGr4W)
 
 Super-resolution models trained by [renarchi](https://github.com/renarchi).
 
