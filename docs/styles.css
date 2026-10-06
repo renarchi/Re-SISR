@@ -165,6 +165,8 @@ h1 { font-family: inherit; font-style: normal; font-size: clamp(56px, 7vw, 96px)
 }
 
 @media (max-width: 600px) {
+  .site-header { flex-wrap: wrap; padding-block: 12px; }
+  .main-nav { flex-wrap: wrap; }
   .wrap { width: calc(100% - 40px); }
   .site-header { min-height: 75px; gap: 12px; }
   .identity { gap: 9px; font-size: 13px; }

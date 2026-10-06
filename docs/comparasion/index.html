@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="../">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#171916">
+  <title>Comparison — Re-SISR</title>
+  <meta name="description" content="Super-resolution and restoration models for anime and illustration. Browse model weights, release notes and licenses by renarchi.">
+  <meta property="og:title" content="Re-SISR — Models by renarchi">
+  <meta property="og:description" content="A personal archive of super-resolution and restoration models for anime and illustration.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://renarchi.github.io/Re-SISR/comparasion/">
+  <meta property="og:image" content="https://renarchi.github.io/Re-SISR/renarchi.jpg">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Re-SISR — Models by renarchi">
+  <meta name="twitter:description" content="Super-resolution and restoration models for anime and illustration.">
+  <meta name="twitter:image" content="https://renarchi.github.io/Re-SISR/renarchi.jpg">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="./assets/lain-mark.svg">
+  <link rel="preload" href="./assets/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./styles.css?v=20260906-3">
+  <link rel="stylesheet" href="./comparison.css">
+  <script src="./assets/comparison/data.js" defer></script>
+  <script src="./comparison.js" defer></script>
+</head>
+<body id="top" class="comparison-page">
+  <a class="skip-link" href="./comparasion/index.html#comparison">Skip to comparison</a>
+  <header class="site-header wrap">
+    <a class="identity" href="./index.html" aria-label="Re-SISR home">
+      <img class="mark" src="./assets/lain-mark.svg" width="34" height="42" alt="">
+      <span>Re-SISR<span class="identity-author"> / renarchi</span></span>
+    </a>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="./index.html#models">Models</a>
+      <a href="./comparasion/" aria-current="page">Comparison</a>
+      <a href="./index.html#about">About</a>
+      <a class="external-link" href="https://github.com/renarchi/Re-SISR">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+  <main>
+    <section class="comparison-section wrap" id="comparison" aria-labelledby="comparison-title">
+      <div class="comparison-heading">
+        <h1 id="comparison-title">Comparison</h1>
+        <p>Compare 2× anime upscaling models.</p>
+      </div>
+
+      <div class="comparison-viewer" id="comparison-viewer">
+        <fieldset class="comparison-controls" id="comparison-controls" disabled>
+          <legend class="sr-only">Choose models and adjust the comparison</legend>
+          <div class="comparison-selections">
+            <div class="comparison-selection">
+              <label for="comparison-left"><span class="comparison-side">A</span> Left model</label>
+              <select id="comparison-left" aria-describedby="comparison-left-parameters"></select>
+              <p class="comparison-parameters" id="comparison-left-parameters"></p>
+            </div>
+            <div class="comparison-selection">
+              <label for="comparison-right"><span class="comparison-side">B</span> Right model</label>
+              <select id="comparison-right" aria-describedby="comparison-right-parameters"></select>
+              <p class="comparison-parameters" id="comparison-right-parameters"></p>
+            </div>
+          </div>
+          <div class="comparison-toolbar">
+            <span class="comparison-gesture-hint">Scroll or pinch to zoom <output id="comparison-zoom" aria-label="Image zoom">—</output></span>
+            <button type="button" id="comparison-fullscreen" aria-pressed="false">Fullscreen</button>
+          </div>
+        </fieldset>
+
+        <div class="comparison-stage" id="comparison-stage" tabindex="0" role="group" aria-label="Image comparison" aria-describedby="comparison-help" aria-busy="false">
+          <div class="comparison-layer" id="comparison-image-right"></div>
+          <div class="comparison-layer comparison-layer-left" id="comparison-image-left"></div>
+          <span class="comparison-image-label comparison-image-label-left" aria-hidden="true">A</span>
+          <span class="comparison-image-label comparison-image-label-right" aria-hidden="true">B</span>
+          <div class="comparison-divider" id="comparison-divider" role="slider" tabindex="0" aria-label="Comparison divider" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" aria-valuetext="50% left model, 50% right model" aria-disabled="true" hidden>
+            <span class="comparison-grip" aria-hidden="true">‹<span></span>›</span>
+          </div>
+          <p class="comparison-empty" id="comparison-empty">Comparison images are not available yet.</p>
+        </div>
+
+        <div class="comparison-feedback">
+          <p id="comparison-status" role="status" aria-live="polite" aria-atomic="true"></p>
+          <button type="button" id="comparison-retry" hidden>Retry images</button>
+        </div>
+        <p class="comparison-help" id="comparison-help">Drag the slider to compare. Scroll or pinch to zoom; drag the image to explore. Double-click or double-tap to reset.</p>
+        <p class="sr-only">Keyboard: + / − to zoom, arrows to pan, 0 to reset. On the divider: left / right arrows to move, Home / End to reveal either side.</p>
+        <p class="comparison-context">The same frame, compared at 2×. Select any two models to inspect their detail and line quality.</p>
+        <p class="comparison-context"><a class="text-link" href="./assets/comparison/input.png" target="_blank" rel="noopener">Original input · 768 × 576</a></p>
+        <noscript><p class="comparison-context">Enable JavaScript to use the image comparison.</p></noscript>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer wrap">
+    <a class="footer-signature" href="./index.html">Re-SISR<span class="footer-byline">by renarchi</span></a>
+    <nav aria-label="Project links">
+      <a href="https://github.com/renarchi/Re-SISR">Repository <span aria-hidden="true">↗</span></a>
+      <a href="https://discord.com/invite/e5JNFpGr4W">Discord <span aria-hidden="true">↗</span></a>
+      <a href="https://github.com/sponsors/renarchi">Support the work <span aria-hidden="true">↗</span></a>
+    </nav>
+  </footer>
+</body>
+</html>

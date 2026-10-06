@@ -1,5 +1,11 @@
 'use strict';
 
+// Directory routes are served as index.html online; support local file previews too.
+if (window.location.protocol === 'file:') {
+  const comparisonLink = document.querySelector('a[href="./comparasion/"]');
+  if (comparisonLink) comparisonLink.href = './comparasion/index.html';
+}
+
 const filters = document.querySelector('.scale-filters');
 const filterButtons = [...filters.querySelectorAll('button')];
 const models = [...document.querySelectorAll('.model')];
