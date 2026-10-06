@@ -12,6 +12,7 @@ Super-resolution models trained by [renarchi](https://github.com/renarchi).
 
 | Model | Scale | Format | Description |
 | :--- | :--- | :--- | :--- |
+| [marina (WIP)](https://renarchi.github.io/Re-SISR/comparasion/) | 2× | ONNX/GLSL | A 988-parameter shader for real-time anime upscaling with an Adore-like look. |
 | [Adore](https://github.com/renarchi/Re-SISR/releases/tag/Adore) | 2× | ONNX | Real-time anime upscaling; successor to Fallin. |
 | [Fallin](https://github.com/renarchi/Re-SISR/releases/tag/Fallin) | 2× | ONNX | Anime upscaling in Soft and Strong variants. Legacy release. |
 | [Alchemy](https://github.com/renarchi/Re-SISR/releases/tag/4x_Alchemy) | 4× | PTH | General upscaling and compression removal. |
